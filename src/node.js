@@ -7,8 +7,17 @@ const node = (state) => {
     return { getValue };
 }
 const iterable = (state) => {
+    // duck-typing to check if an object is iterable
+    this.is = (object) =>
+        object !== null
+        && typeof object === 'object'
+        && typeof object.getNext === 'function';
     let getNext = () => {
-        return state.next;
+        if (this.is(state.next)) {
+            return state.next;
+        } else {
+            return null;
+        }
     };
     return { getNext };
 }
@@ -20,7 +29,7 @@ const linkNode = (state) => {
         node(state)
     );
 }
-/*
+
 let myNode1 = linkNode({
     value: 1,
     next: null
@@ -43,4 +52,9 @@ while (curr !== null) {
     console.log(curr.getValue());
     curr = curr.getNext();
 }
-*/
+
+module.exports = {
+    node,
+    iterable,
+    linkNode
+};
