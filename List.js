@@ -1,5 +1,5 @@
 'use strict'
-const Collection = require('./collection.js');
+const Collection = require('./Collection.js');
 
 class List extends Collection {
     constructor() {
