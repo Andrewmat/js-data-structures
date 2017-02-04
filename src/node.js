@@ -10,7 +10,7 @@ const node = (state) => {
         state.value = val;
         return this;
     }
-    return { getValue, setValue };
+    return { value : getValue, setValue };
 }
 
 const linkedNode = (state) => {

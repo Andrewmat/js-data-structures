@@ -4,13 +4,10 @@ const src = require('../src.js');
 const { linkedNode, iterableNode } = require(src.node);
 
 const linkedList = (state) => {
-    let first;
-    let last;
-    let length;
+    let first,
+        last,
+        length;
     let createNewNode = (value) => linkedNode({ value, next: null });
-    let getLength = () => {
-        return length;
-    }
     let init = (value) => {
         let newNode = createNewNode(value);
         first = newNode;
@@ -26,14 +23,14 @@ const linkedList = (state) => {
         } else {
             init(value);
         }
-        return state;
+        return ;
     };
     let forEach = (execute) => {
         if (first != null && typeof execute === 'function') {
             let curr = first,
                 index = 0;
             while (curr !== null) {
-                execute(curr.getValue(), index++);
+                execute(curr.value(), index++);
                 curr = curr.getNext();
             }
         }
@@ -41,23 +38,31 @@ const linkedList = (state) => {
     };
     let get = (index) => {
         if (first != null && typeof index === 'number') {
+            if (index === length - 1) {
+                return last.value();
+            }
             let curr = first,
                 i = 0;
-            while (i < index) {
+            while (i++ < index) {
                 if (curr === null) {
-                    return undefined;
+                    break;
                 }
                 curr = curr.getNext();
             }
-            return curr;
+            if (curr === null) {
+                return undefined;
+            }
+            return curr.value();
         }
+        return null;
     }
 
     return {
         add,
         get,
         forEach,
-        getLength
+        last : () => { return last.value(); },
+        length: () => { return length; }
     };
 }
 

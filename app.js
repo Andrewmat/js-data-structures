@@ -3,10 +3,10 @@ const src = require('./src.js');
 const { linkedList } = require(src.list);
 
 let mylst = linkedList();
-mylst.add(1);
-mylst.add(2);
-mylst.add(5);
+for (let i = 0; i < 30; ++i) {
+    mylst.add('' + i + 'var');
+}
 
 mylst.forEach((el, ind) => {
     console.log('lst[' + ind + ']: ' + el);
-})
+});
