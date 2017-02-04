@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 const nextable = (state) => {
     this.isNextable = (object) =>
