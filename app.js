@@ -1,12 +1,14 @@
 'use strict';
 const src = require('./src.js');
-const { linkedList } = require(src.list);
+const { linkedList, doubleLinkedList } = require(src.list);
 
-let mylst = linkedList();
+let mylst = doubleLinkedList();
+
 for (let i = 0; i < 30; ++i) {
     mylst.add('' + i + 'var');
 }
 
+console.log('length ' + mylst.length() + ':');
 mylst.forEach((el, ind) => {
     console.log('lst[' + ind + ']: ' + el);
 });

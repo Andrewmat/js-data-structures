@@ -1,6 +1,6 @@
 'use strict'
 const src = require('../src.js');
-const { nextable } = require(src.iterable);
+const { nextable, iterable } = require(src.iterable);
 
 const node = (state) => {
     let getValue = () => {

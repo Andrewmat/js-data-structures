@@ -6,7 +6,7 @@ const { linkedNode, iterableNode } = require(src.node);
 const linkedList = (state) => {
     let first,
         last,
-        length;
+        length = 0;
     let createNewNode = (value) => linkedNode({ value, next: null });
     let init = (value) => {
         let newNode = createNewNode(value);
@@ -15,15 +15,14 @@ const linkedList = (state) => {
         length = 1;
     };
     let add = (value) => {
-        if (last != null) {
+        if (length !== 0) {
             let newNode = createNewNode(value);
             last.setNext(newNode);
             last = newNode;
-            length++;
         } else {
             init(value);
         }
-        return ;
+        return length++;
     };
     let forEach = (execute) => {
         if (first != null && typeof execute === 'function') {
@@ -34,7 +33,6 @@ const linkedList = (state) => {
                 curr = curr.getNext();
             }
         }
-        return state;
     };
     let get = (index) => {
         if (first != null && typeof index === 'number') {
@@ -55,15 +53,80 @@ const linkedList = (state) => {
             return curr.value();
         }
         return null;
-    }
+    };
 
     return {
         add,
         get,
         forEach,
-        last : () => { return last.value(); },
+        first: () => { return first.value(); },
+        last: () => { return last.value(); },
         length: () => { return length; }
     };
 }
 
-module.exports = { linkedList };
+const doubleLinkedList = (state) => {
+    let first,
+        length = 0;
+    let createNewNode = (value, next, prev) => iterableNode({ value, next, prev });
+    let init = (value) => {
+        first = createNewNode(value, null, null);
+        first.setNext(first);
+        first.setPrev(first);
+    };
+    let last = () => { return first.getPrev(); };
+    let add = (value) => {
+        if (length !== 0) {
+            let newNode = createNewNode(value, first, last());
+            last().setNext(newNode);
+            first.setPrev(newNode);
+        } else {
+            init(value);
+        }
+        return length++;
+    };
+    let forEach = (execute) => {
+        if (first != null && typeof execute === 'function') {
+            let curr = first,
+                index = 0;
+            do {
+                execute(curr.value(), index++);
+                curr = curr.getNext();
+            } while (curr !== first);
+        }
+    };
+    let get = (index) => {
+        if (first != null && typeof index === 'number' && index < length) {
+            let curr = first;
+            let stepsFromLast = length - index,
+                stepsFromFirst = index;
+            let steps, stepperFunction;
+            if (stepsFromLast < stepsFromFirst) {
+                steps = stepsFromLast;
+                stepperFunction = 'getPrev';
+            } else {
+                steps = stepsFromFirst;
+                stepperFunction = 'getNext';
+            }
+            let i = 0;
+            while (i++ < steps) {
+                curr = curr[stepperFunction]();
+            }
+            return curr.value();
+        }
+        return null;
+    }
+    return {
+        add,
+        get,
+        forEach,
+        first: () => { return first.value(); },
+        last: () => { return last().value(); },
+        length: () => { return length; }
+    }
+}
+
+module.exports = {
+    linkedList,
+    doubleLinkedList
+};
